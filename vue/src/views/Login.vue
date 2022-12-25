@@ -83,13 +83,13 @@ let errorMsg = ref('');
 function login(ev) {
     ev.preventDefault();
 
-    store.dispatch('login', user)
+    store.dispatch("login", user)
         .then(() => {
             router.push({
                 name: 'Dashboard'
-            })
+            });
         })
-        .catch(err => {
+        .catch((err) => {
             errorMsg.value = err.response.data.error
         })
 }

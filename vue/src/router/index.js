@@ -4,6 +4,7 @@ import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Reviews from '../views/Reviews.vue'
+import ReviewView from '../views/ReviewView.vue'
 // COMPONENTS
 import DefaultLayout from '../components/DefaultLayout.vue'
 import AuthLayout from '../components/AuthLayout.vue'
@@ -28,6 +29,16 @@ const routes = [
                 name: 'Reviews',
                 component: Reviews
             },
+            {
+                path: '/reviews/create',
+                name: 'ReviewCreate',
+                component: ReviewView
+            },
+            {
+                path: '/reviews/:id',
+                name: 'ReviewView',
+                component: ReviewView
+            },
         ]
     },
     {
@@ -35,7 +46,7 @@ const routes = [
         redirect: '/login',
         name: 'Auth',
         component: AuthLayout,
-        meta: {isGuest: true},
+        meta: { isGuest: true },
         children: [
             {
                 path: '/login',
@@ -68,5 +79,14 @@ const router = createRouter({
 //         next();
 //     }
 // })
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !Store.state.user.token) {
+        next({ name: "Login" });
+    } else if (Store.state.user.token && to.meta.isGuest) {
+        next({ name: "Dashboard" });
+    } else {
+        next();
+    }
+});
 
 export default router;

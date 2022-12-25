@@ -5,6 +5,7 @@
                 <h1
                     class="text-3xl font-bold leading-tight text-gray-900 animate__animated animate__fast animate__fadeInLeft">
                     {{ title }}</h1>
+                <slot name="header"></slot>
             </div>
         </header>
         <main>

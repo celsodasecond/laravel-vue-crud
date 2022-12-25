@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password;   
+use Illuminate\Validation\Rules\Password;
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|string|unique:users,email',
@@ -34,7 +35,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email|string|exists:users,email',
             'password' => [
@@ -42,16 +44,14 @@ class AuthController extends Controller
             ],
             'remember' => 'boolean'
         ]);
-
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
 
         if (!Auth::attempt($credentials, $remember)) {
             return response([
-                'error' => 'The Provided Credentials are not Correct.'
+                'error' => 'The Provided credentials are not correct'
             ], 422);
         }
-
         /** @var User $user */
         $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
@@ -65,8 +65,9 @@ class AuthController extends Controller
     public function logout()
     {
         /** @var User $user */
-        $user = Auth::user();
-        $user->currentAccessToken()->delete();
+        // $user = Auth::user();
+        // $user->currentAccessToken()->delete();
+        auth('sanctum')->user()->currentAccessToken()->delete();
 
         return response([
             'success' => true

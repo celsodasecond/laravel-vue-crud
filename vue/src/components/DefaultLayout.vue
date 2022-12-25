@@ -108,7 +108,7 @@ import { useRouter } from 'vue-router'
 
 const navigation = [
     { name: 'Dashboard', to: { name: 'Dashboard' } },
-    { name: 'Reviews', to: { name: 'Reviews' } },
+    { name: 'reviews', to: { name: 'Reviews' } },
 
 ]
 
@@ -130,13 +130,14 @@ export default {
         const router = useRouter();
 
         function logout() {
-            store.dispatch('logout')
-                .then(() => {
-                    router.push({
-                        name: 'Login'
-                    });
+            store.dispatch("logout").then(() => {
+                router.push({
+                    name: "Login",
                 });
+            });
         }
+
+        // store.dispatch("getUser");
 
         return {
             user: computed(() => store.state.user.data),
